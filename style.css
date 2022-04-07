@@ -1,0 +1,43 @@
+*{
+    box-sizing: border-box;
+}
+.principal{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 700px;
+    background-color: #EEF9BF;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 66px;
+    letter-spacing: -0.004em;
+    margin-top: 40px;
+    color: #75B79E;
+}
+
+.parrotcards{
+    display: flex;
+    margin-bottom: 153px;
+}
+
+.card{
+    width: 117px;
+    height: 146px;
+    background-color: #A7E9AF;
+    padding: 24px 7px; 
+    border-radius: 5px;
+    border: 1px solid #99CEA8;
+}
+
+.cardverso{
+    width: 100px;
+    height: 100px;
+    background-image: url(imgs/front.png);
+    background-size: 100px;
+}
