@@ -8,9 +8,13 @@ const relacaoCartas = {
     6: "unicornparrot"
 }
 const posicaoCartas = [];
+let numeroJogadas = 0;
+let cartas = 0;
+let jogadaImpar =0;
+let pares = 0;
 
 window.onload = function startGame(){
-    let cartas = prompt("Escolha o numero de Cartas:4-14");
+    cartas = prompt("Escolha o numero de Cartas:4-14");
     while(cartas%2 !=0 || cartas < 4 || cartas >=15 || isNaN(cartas)){
         alert('Entrava Inválida');
         cartas = prompt("Escolha o numero de Cartas:4-14, apenas numero par");
@@ -22,11 +26,12 @@ window.onload = function startGame(){
     const addCards = document.querySelector(".parrotcards");
     for (let index = 0; index < cartas; index++){
         addCards.innerHTML += 
-        `<div id =${index} class="card" type="button" onclick = "virarCarta(this)">
+        `<div id =${index} class="card" type="button" onclick = "jogar(this, true)">
             <div  class="cardverso">
             </div>
         </div>`
     }
+    numeroJogadas =0;
     jogo(cartas);
 }
 function comparador() { 
@@ -44,9 +49,49 @@ function jogo(numeroCartas) {
 
 }
 
-function virarCarta(elemento) {
-    aux = elemento.querySelector(".cardverso");
-    console.log(elemento);
-    aux.classList.toggle(relacaoCartas[posicaoCartas[elemento.id]]);
+function virarCarta(elemento,permissao = true) {
+    if(permissao){
+        aux = elemento.querySelector(".cardverso");
+        console.log(elemento);
+        aux.classList.toggle(relacaoCartas[posicaoCartas[elemento.id]]);
+    }else{
+        console.log("nao pode");
+    }
+}
+
+
+function encontrouPar(elemento) {
+    let parFind = document.querySelectorAll(`.${relacaoCartas[posicaoCartas[elemento.id]]}`).length
+    travarVirada = document.querySelectorAll(`.${relacaoCartas[posicaoCartas[elemento.id]]}`)
+    if(parFind !=2 && numeroJogadas%2 !=0){
+        jogadaImpar = travarVirada;
+    }
+
+    if (parFind ===2 && numeroJogadas%2 ===0){
+        travarVirada[0].parentNode.setAttribute("onclick","jogar(this, false)");
+        travarVirada[1].parentNode.setAttribute("onclick","jogar(this, false)");
+        pares+= 1;
+    }
+    if (parFind !=2 && numeroJogadas%2 ===0){
+        setTimeout(virarCarta, 1000, travarVirada[0].parentNode, true);
+        setTimeout(virarCarta, 1000, jogadaImpar[0].parentNode, true);
+    }
+}
+
+function fimJogo() {
+    if (Number(pares) === Number(cartas/2)){
+        alert(`Você ganhou em ${numeroJogadas} jogadas!`);
+        console.log("oi");
+    }
+    console.log(cartas);
+}
+
+
+function jogar(elemento,permissao) {
+    numeroJogadas += 1;
+    virarCarta(elemento,permissao);
+    encontrouPar(elemento);
+    console.log(pares);
+    fimJogo();
 }
 
