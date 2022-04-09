@@ -13,6 +13,7 @@ let cartas = 0;
 let jogadaImpar =0;
 let pares = 0;
 let controladorTempo = 0;
+let tempoSegundos =0;
 
 
 function contaTempo() {
@@ -23,9 +24,40 @@ function contaTempo() {
    const segundos = tempoNumero%60;
    const contador = `${minutes.toString().padStart(2,"0")}:${segundos.toString().padStart(2,"0")} `
    tempo.innerHTML = contador;
+   tempoSegundos =tempoNumero;
+}
+function resetTempo() {
+    const tempoAtual = document.querySelector(".relogio h2");
+    tempoAtual.innerHTML = "00:00";
+}
+function resetCartas(){
+    const remover = document.querySelector(".parrotcards");
+    while (remover.hasChildNodes()){
+        remover.removeChild(remover.lastChild);
+    }
+}
+function fimJogo() {
+    if (Number(pares) === Number(cartas/2)){
+        setTimeout(() => { alert(`Você ganhou em ${numeroJogadas} jogadas! e gastou ${tempoSegundos}segundos!!`) }, 500); 
+        clearInterval(controladorTempo);
+        setTimeout(() => {
+            let recomeçar = prompt('Quer jogar novamente??, digite sim ou não')
+            if (recomeçar = 'sim'){
+                resetTempo();
+                resetCartas();
+                startGame();
+            }else{
+                alert('Fim de jogo');
+            }
+
+        }, 1000);
+        
+    }
+    console.log(cartas);
 }
 
-window.onload = function startGame(){
+
+function startGame(){
     cartas = prompt("Escolha o numero de Cartas:4-14");
     while(cartas%2 !=0 || cartas < 4 || cartas >=15 || isNaN(cartas)){
         alert('Entrava Inválida');
@@ -44,15 +76,18 @@ window.onload = function startGame(){
         </div>`
     }
     numeroJogadas =0;
+    pares =0;
     jogo(cartas);
     controladorTempo = setInterval(contaTempo,1000);
 }
+
+window.onload = startGame();
 function comparador() { 
 	return Math.random() - 0.5; 
 }
 
 function jogo(numeroCartas) {
-
+    posicaoCartas.length =0;
     for (let index = 0; index < numeroCartas/2; index++) {
         posicaoCartas.push(index);
         posicaoCartas.push(index);
@@ -92,13 +127,6 @@ function encontrouPar(elemento) {
     }
 }
 
-function fimJogo() {
-    if (Number(pares) === Number(cartas/2)){
-        setTimeout(() => { alert(`Você ganhou em ${numeroJogadas} jogadas!`); }, 500); 
-        clearInterval(controladorTempo);
-    }
-    console.log(cartas);
-}
 
 
 function jogar(elemento,permissao) {
