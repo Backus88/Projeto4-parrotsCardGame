@@ -10,6 +10,23 @@
     justify-content: space-between;
     align-items: center;
 }
+.relogio{
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: crimson;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+h2{
+    font-family: 'Roboto', sans-serif;
+    font-size: 25px;
+    text-align: center;
+}
 
 h1 {
     font-family: 'Roboto', sans-serif;

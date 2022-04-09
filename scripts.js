@@ -12,6 +12,18 @@ let numeroJogadas = 0;
 let cartas = 0;
 let jogadaImpar =0;
 let pares = 0;
+let controladorTempo = 0;
+
+
+function contaTempo() {
+   const tempo = document.querySelector(".relogio h2");
+   let tempoNumero = tempo.innerHTML;
+   tempoNumero = 60*Number(tempoNumero[0]+tempoNumero[1]) + Number(tempoNumero[3]+ tempoNumero[4]) +1;
+   const minutes = Math.floor(tempoNumero/60);
+   const segundos = tempoNumero%60;
+   const contador = `${minutes.toString().padStart(2,"0")}:${segundos.toString().padStart(2,"0")} `
+   tempo.innerHTML = contador;
+}
 
 window.onload = function startGame(){
     cartas = prompt("Escolha o numero de Cartas:4-14");
@@ -33,6 +45,7 @@ window.onload = function startGame(){
     }
     numeroJogadas =0;
     jogo(cartas);
+    controladorTempo = setInterval(contaTempo,1000);
 }
 function comparador() { 
 	return Math.random() - 0.5; 
@@ -54,6 +67,7 @@ function virarCarta(elemento,permissao = true) {
         aux = elemento.querySelector(".cardverso");
         console.log(elemento);
         aux.classList.toggle(relacaoCartas[posicaoCartas[elemento.id]]);
+        numeroJogadas += 1;
     }else{
         console.log("nao pode");
     }
@@ -80,14 +94,14 @@ function encontrouPar(elemento) {
 
 function fimJogo() {
     if (Number(pares) === Number(cartas/2)){
-        setTimeout(() => { alert(`Você ganhou em ${numeroJogadas} jogadas!`); }, 500);   
+        setTimeout(() => { alert(`Você ganhou em ${numeroJogadas} jogadas!`); }, 500); 
+        clearInterval(controladorTempo);
     }
     console.log(cartas);
 }
 
 
 function jogar(elemento,permissao) {
-    numeroJogadas += 1;
     virarCarta(elemento,permissao);
     encontrouPar(elemento);
     console.log(pares);
