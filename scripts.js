@@ -19,7 +19,7 @@ window.onload = function startGame(){
         alert('Entrava Inválida');
         cartas = prompt("Escolha o numero de Cartas:4-14, apenas numero par");
     }
-    let largura = 20+ ((Number(cartas)/2)*117);
+    let largura = 20+ ((Number(cartas)/2)*151);
     largura = largura+"px";
     document.querySelector(".parrotcards").setAttribute("style","width:"+largura);
 
@@ -80,8 +80,7 @@ function encontrouPar(elemento) {
 
 function fimJogo() {
     if (Number(pares) === Number(cartas/2)){
-        alert(`Você ganhou em ${numeroJogadas} jogadas!`);
-        console.log("oi");
+        setTimeout(() => { alert(`Você ganhou em ${numeroJogadas} jogadas!`); }, 500);   
     }
     console.log(cartas);
 }
