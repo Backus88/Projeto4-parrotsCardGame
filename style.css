@@ -97,7 +97,10 @@ h1 {
     background-image: url(imgs/unicornparrot.gif);
 }
 
-.card:hover{
+.card:hover .cardverso{
+    transform: rotateY(-180deg);
+}
+.card:hover .bobrossparrot{
     transform: rotateY(0deg);
 }
 

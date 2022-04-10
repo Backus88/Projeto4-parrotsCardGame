@@ -14,7 +14,7 @@ let jogadaImpar =0;
 let pares = 0;
 let controladorTempo = 0;
 let tempoSegundos =0;
-let tabuleiroOn = true;
+let tabuleiroLivre = true;
 
 
 function contaTempo() {
@@ -100,52 +100,47 @@ function jogo(numeroCartas) {
 }
 
 function virarCarta(elemento,permissao, cartaVirar) {
-    if(permissao && cartaVirar && tabuleiroOn){
+    if(permissao && cartaVirar){
         aux = elemento.querySelector(".cardverso");
+        console.log(elemento);
         aux.classList.toggle(relacaoCartas[posicaoCartas[elemento.id]]);
+        numeroJogadas += 1;
     }else{
         console.log("nao pode");
     }
 }
 
 
-function encontrouPar(elemento) {
-    if(tabuleiroOn){
+function encontrouPar(elemento,estadoVirar) {
+    if(estadoVirar){
         let parFind = document.querySelectorAll(`.${relacaoCartas[posicaoCartas[elemento.id]]}`).length
         travarVirada = document.querySelectorAll(`.${relacaoCartas[posicaoCartas[elemento.id]]}`)
         if(parFind !=2 && numeroJogadas%2 !=0){
             jogadaImpar = travarVirada;
-            jogadaImpar[0].parentNode.setAttribute("onclick","jogar(this, true, false)");
         }
 
         if (parFind ===2 && numeroJogadas%2 ===0){
-            travarVirada[0].parentNode.setAttribute("onclick","jogar(this, false, false)");
-            travarVirada[1].parentNode.setAttribute("onclick","jogar(this, false, false)");
+            travarVirada[0].parentNode.setAttribute("onclick","jogar(this, false)");
+            travarVirada[1].parentNode.setAttribute("onclick","jogar(this, false)");
             pares+= 1;
         }
         if (parFind !=2 && numeroJogadas%2 ===0){
-            jogadaImpar[0].parentNode.setAttribute("onclick","jogar(this, true, true)");
-            tabuleiroOn = false;
+            estadoVirar = false;
+            setTimeout(virarCarta, 1000, travarVirada[0].parentNode, true);
+            setTimeout(virarCarta, 1000, jogadaImpar[0].parentNode, true);
             setTimeout(()=>{
-                tabuleiroOn = true;
-                setTimeout(()=> {
-                    virarCarta(travarVirada[0].parentNode, true, true);
-                    virarCarta(jogadaImpar[0].parentNode, true, true);
-                },10)
-                
-            },1000);
+                estadoVirar = true;
+            },20000)
         }
     }   
 }
 
-function jogar(elemento,permissao, cartaVirar) {
-    if (permissao && cartaVirar && tabuleiroOn){
-        numeroJogadas +=1;
-        virarCarta(elemento,permissao,cartaVirar);
-        encontrouPar(elemento);
+function jogar(elemento,permissao) {
+    if (estadoVirar){
+        virarCarta(elemento,permissao,estadoVirar);
+        encontrouPar(elemento,estadoVirar);
     }
     console.log(pares);
-    console.log(numeroJogadas);
     fimJogo();
 }
 
