@@ -15,6 +15,7 @@ let pares = 0;
 let controladorTempo = 0;
 let tempoSegundos =0;
 let tabuleiroOn = true;
+let jogadaPar = 0;
 
 
 function contaTempo() {
@@ -58,7 +59,7 @@ function fimJogo() {
         }, 1000);
         tabuleiroOn = false;
     }
-    console.log(cartas);
+    console.log("Cartas:"+ cartas);
 }
 
 
@@ -71,13 +72,21 @@ function startGame(){
     let largura = 20+ ((Number(cartas)/2)*151);
     largura = largura+"px";
     document.querySelector(".parrotcards").setAttribute("style","width:"+largura);
+    posicaoCartas.length =0;
+    for (let index = 0; index < cartas/2; index++) {
+        posicaoCartas.push(index);
+        posicaoCartas.push(index);
+    }
+    posicaoCartas.sort(comparador);
 
     const addCards = document.querySelector(".parrotcards");
     for (let index = 0; index < cartas; index++){
         addCards.innerHTML += 
         `<div class ="cena">
             <div id =${index} class="card" type="button" onclick = "jogar(this, true, true)">
-                <div  class="cardverso">
+                <div  class="cardverso frontface">
+                </div>
+                <div  class="cardverso ${relacaoCartas[posicaoCartas[index]]}">
                 </div>
             </div>
         </div>`
@@ -86,8 +95,9 @@ function startGame(){
     tabuleiroOn = true;
     numeroJogadas =0;
     pares =0;
-    jogo(cartas);
     controladorTempo = setInterval(contaTempo,1000);
+    jogadaImpar=0;
+    jogadaPar =0;
 }
 
 window.onload = startGame();
@@ -96,21 +106,9 @@ function comparador() {
 	return Math.random() - 0.5; 
 }
 
-function jogo(numeroCartas) {
-    posicaoCartas.length =0;
-    for (let index = 0; index < numeroCartas/2; index++) {
-        posicaoCartas.push(index);
-        posicaoCartas.push(index);
-    }
-    posicaoCartas.sort(comparador);
-    versoCarta = document.querySelectorAll(".parrotcards .cena .card .cardverso");
-
-}
-
 function virarCarta(elemento,permissao, cartaVirar) {
     if(permissao && cartaVirar && tabuleiroOn){
-        aux = elemento.querySelector(".cardverso");
-        aux.classList.toggle(relacaoCartas[posicaoCartas[elemento.id]]);
+        elemento.classList.toggle("taVirada");
     }else{
         console.log("nao pode");
     }
@@ -119,41 +117,44 @@ function virarCarta(elemento,permissao, cartaVirar) {
 
 function encontrouPar(elemento) {
     if(tabuleiroOn){
-        let parFind = document.querySelectorAll(`.${relacaoCartas[posicaoCartas[elemento.id]]}`).length
-        travarVirada = document.querySelectorAll(`.${relacaoCartas[posicaoCartas[elemento.id]]}`)
-        if(parFind !=2 && numeroJogadas%2 !=0){
-            jogadaImpar = travarVirada;
-            jogadaImpar[0].parentNode.setAttribute("onclick","jogar(this, true, false)");
+        if(numeroJogadas%2 != 0){
+            jogadaImpar = elemento;
+        }else {
+            jogadaPar = elemento;
+        }
+        if(jogadaPar === 0 && numeroJogadas%2 !=0){
+            jogadaImpar.setAttribute("onclick","jogar(this, true, false)");
         }
 
-        if (parFind ===2 && numeroJogadas%2 ===0){
-            travarVirada[0].parentNode.setAttribute("onclick","jogar(this, false, false)");
-            travarVirada[1].parentNode.setAttribute("onclick","jogar(this, false, false)");
+        if (posicaoCartas[jogadaImpar.id] === posicaoCartas[jogadaPar.id] && numeroJogadas%2 ===0){
+            jogadaImpar.setAttribute("onclick","jogar(this, false, false)");
+            jogadaPar.setAttribute("onclick","jogar(this, false, false)");
             pares+= 1;
         }
-        if (parFind !=2 && numeroJogadas%2 ===0){
-            jogadaImpar[0].parentNode.setAttribute("onclick","jogar(this, true, true)");
+        if (posicaoCartas[jogadaImpar.id] != posicaoCartas[jogadaPar.id] && numeroJogadas%2 ===0){
+            jogadaImpar.setAttribute("onclick","jogar(this, true, true)");
             tabuleiroOn = false;
             setTimeout(()=>{
                 tabuleiroOn = true;
                 setTimeout(()=> {
-                    virarCarta(travarVirada[0].parentNode, true, true);
-                    virarCarta(jogadaImpar[0].parentNode, true, true);
-                },1)
+                    console.log("aki")
+                    virarCarta(jogadaImpar, true, true);
+                    virarCarta(jogadaPar, true, true);
+                },10)
                 
             },1000);
         }
     }   
 }
 
-function jogar(elemento,permissao, cartaVirar) {
+function jogar(elemento, permissao, cartaVirar) {
     if (permissao && cartaVirar && tabuleiroOn){
         numeroJogadas +=1;
         virarCarta(elemento,permissao,cartaVirar);
         encontrouPar(elemento);
     }
-    console.log(pares);
-    console.log(numeroJogadas);
+    console.log("pares:" +pares);
+    console.log("jogadas:" +numeroJogadas);
     
     if(tabuleiroOn){
         fimJogo();
