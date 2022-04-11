@@ -46,8 +46,8 @@ h1 {
     flex-wrap: wrap;
     margin-bottom: 250px;
 }
-
-.card{
+.cena{
+    perspective: 500px;
     width: 117px;
     height: 146px;
     background-color: #A7E9AF;
@@ -58,17 +58,32 @@ h1 {
     margin-bottom: 34px;
 }
 
+.card{
+    width: 100%;
+    height: 100%;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    position: relative;
+}
+
 .cardverso{
     width: 100px;
     height: 100px;
-    background-image: url(imgs/front.png);
     background-size: contain;
     background-repeat: no-repeat;
-    transition: all .5s;
-    transform-style: preserve-3d;
+    position: absolute;
 }
 
-.bobrossparrot{
+[class = "cardverso"]{
+    background-image: url(imgs/front.png);
+}
+
+.card.is-flipped {
+    transform: rotateY(180deg);
+  }
+
+.cardverso.bobrossparrot {
     transform: rotateY(180deg);
     background-image: url(imgs/bobrossparrot.gif);
 }
@@ -97,9 +112,6 @@ h1 {
     background-image: url(imgs/unicornparrot.gif);
 }
 
-.card:hover{
-    transform: rotateY(0deg);
-}
 
 
 @media (max-width: 614px){
