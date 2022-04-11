@@ -71,10 +71,13 @@ function startGame(){
     const addCards = document.querySelector(".parrotcards");
     for (let index = 0; index < cartas; index++){
         addCards.innerHTML += 
-        `<div id =${index} class="card" type="button" onclick = "jogar(this, true, true)">
-            <div  class="cardverso">
+        `<div class ="cena">
+            <div id =${index} class="card" type="button" onclick = "jogar(this, true, true)">
+                <div  class="cardverso">
+                </div>
             </div>
         </div>`
+        
     }
     numeroJogadas =0;
     pares =0;
@@ -95,7 +98,7 @@ function jogo(numeroCartas) {
         posicaoCartas.push(index);
     }
     posicaoCartas.sort(comparador);
-    versoCarta = document.querySelectorAll(".parrotcards .card .cardverso");
+    versoCarta = document.querySelectorAll(".parrotcards .cena .card .cardverso");
 
 }
 
@@ -131,7 +134,7 @@ function encontrouPar(elemento) {
                 setTimeout(()=> {
                     virarCarta(travarVirada[0].parentNode, true, true);
                     virarCarta(jogadaImpar[0].parentNode, true, true);
-                },10)
+                },1)
                 
             },1000);
         }
