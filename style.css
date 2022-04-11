@@ -47,20 +47,22 @@ h1 {
     margin-bottom: 250px;
 }
 .cena{
+    background-color: #EEF9BF;
+    display:flex ;
+    align-items: center;
+    justify-content: center;
+}
+
+.card{
+    border-radius: 5px;
+    margin: 0px 17px;
+    margin-bottom: 34px;
+    padding: 24px 7px; 
+    border: 1px solid #99CEA8;
     perspective: 500px;
     width: 117px;
     height: 146px;
     background-color: #A7E9AF;
-    padding: 24px 7px; 
-    border-radius: 5px;
-    border: 1px solid #99CEA8;
-    margin: 0px 17px;
-    margin-bottom: 34px;
-}
-
-.card{
-    width: 100%;
-    height: 100%;
     transition: transform 1s;
     transform-style: preserve-3d;
     cursor: pointer;
@@ -70,20 +72,22 @@ h1 {
 .cardverso{
     width: 100px;
     height: 100px;
-    background-size: contain;
+    background-size:contain;
     background-repeat: no-repeat;
     position: absolute;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
-[class = "cardverso"]{
+.taVirada{
+    transform: rotateY(180deg);
+}
+
+.frontface{
+    transform: rotateY(-0deg);
     background-image: url(imgs/front.png);
 }
-
-.card.is-flipped {
-    transform: rotateY(180deg);
-  }
-
-.cardverso.bobrossparrot {
+.bobrossparrot {
     transform: rotateY(180deg);
     background-image: url(imgs/bobrossparrot.gif);
 }
