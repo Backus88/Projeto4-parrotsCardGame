@@ -38,21 +38,25 @@ function resetCartas(){
     }
 }
 function fimJogo() {
+    let recomecar = 0;
     if (Number(pares) === Number(cartas/2)){
         setTimeout(() => { alert(`Você ganhou em ${numeroJogadas} jogadas! e gastou ${tempoSegundos}segundos!!`) }, 500); 
         clearInterval(controladorTempo);
-        setTimeout(() => {
-            let recomeçar = prompt('Quer jogar novamente??, digite sim ou não')
-            if (recomeçar === 'sim'){
+        const tempoFim = setInterval(() => {
+            recomecar = prompt('Quer jogar novamente??, digite sim ou não');
+            if (recomecar === 'sim'){
                 resetTempo();
                 resetCartas();
                 startGame();
-            }else{
-                alert('Fim de jogo');
+                clearInterval(tempoFim);
             }
-
-        }, 1000);
+            if(recomecar === 'não'){
+                alert('Fim de jogo');
+                clearInterval(tempoFim);
+            }
         
+        }, 1000);
+        tabuleiroOn = false;
     }
     console.log(cartas);
 }
@@ -79,6 +83,7 @@ function startGame(){
         </div>`
         
     }
+    tabuleiroOn = true;
     numeroJogadas =0;
     pares =0;
     jogo(cartas);
@@ -149,6 +154,9 @@ function jogar(elemento,permissao, cartaVirar) {
     }
     console.log(pares);
     console.log(numeroJogadas);
-    fimJogo();
+    
+    if(tabuleiroOn){
+        fimJogo();
+    }
 }
 
