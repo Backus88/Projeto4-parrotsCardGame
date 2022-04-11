@@ -59,7 +59,6 @@ function fimJogo() {
         }, 1000);
         tabuleiroOn = false;
     }
-    console.log("Cartas:"+ cartas);
 }
 
 
@@ -119,13 +118,10 @@ function encontrouPar(elemento) {
     if(tabuleiroOn){
         if(numeroJogadas%2 != 0){
             jogadaImpar = elemento;
+            jogadaImpar.setAttribute("onclick","jogar(this, true, false)");
         }else {
             jogadaPar = elemento;
         }
-        if(jogadaPar === 0 && numeroJogadas%2 !=0){
-            jogadaImpar.setAttribute("onclick","jogar(this, true, false)");
-        }
-
         if (posicaoCartas[jogadaImpar.id] === posicaoCartas[jogadaPar.id] && numeroJogadas%2 ===0){
             jogadaImpar.setAttribute("onclick","jogar(this, false, false)");
             jogadaPar.setAttribute("onclick","jogar(this, false, false)");
@@ -137,7 +133,6 @@ function encontrouPar(elemento) {
             setTimeout(()=>{
                 tabuleiroOn = true;
                 setTimeout(()=> {
-                    console.log("aki")
                     virarCarta(jogadaImpar, true, true);
                     virarCarta(jogadaPar, true, true);
                 },10)
@@ -153,8 +148,6 @@ function jogar(elemento, permissao, cartaVirar) {
         virarCarta(elemento,permissao,cartaVirar);
         encontrouPar(elemento);
     }
-    console.log("pares:" +pares);
-    console.log("jogadas:" +numeroJogadas);
     
     if(tabuleiroOn){
         fimJogo();
